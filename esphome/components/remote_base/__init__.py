@@ -557,6 +557,48 @@ def coolix_dumper(var, config):
     pass
 
 
+# Coolix48
+(
+    Coolix48Data,
+    Coolix48BinarySensor,
+    Coolix48Trigger,
+    Coolix48Action,
+    Coolix48Dumper,
+) = declare_protocol("Coolix48")
+
+COOLIX48_SCHEMA = cv.Schema(
+    {cv.Required(CONF_DATA): cv.hex_int_range(0, 0xFFFFFFFFFFFF)}
+)
+
+
+@register_binary_sensor("coolix48", Coolix48BinarySensor, COOLIX48_SCHEMA)
+def coolix48_binary_sensor(var, config):
+    cg.add(
+        var.set_data(
+            cg.StructInitializer(
+                Coolix48Data,
+                ("data", config[CONF_DATA]),
+            )
+        )
+    )
+
+
+@register_trigger("coolix48", Coolix48Trigger, Coolix48Data)
+def coolix48_trigger(var, config):
+    pass
+
+
+@register_dumper("coolix48", Coolix48Dumper)
+def coolix48_dumper(var, config):
+    pass
+
+
+@register_action("coolix48", Coolix48Action, COOLIX48_SCHEMA)
+async def coolix48_action(var, config, args):
+    template_ = await cg.templatable(config[CONF_DATA], args, cg.uint64)
+    cg.add(var.set_data(template_))
+
+
 # Dish
 DishData, DishBinarySensor, DishTrigger, DishAction, DishDumper = declare_protocol(
     "Dish"

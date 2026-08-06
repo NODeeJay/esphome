@@ -57,6 +57,11 @@ button:
       remote_transmitter.transmit_samsung:
         data: 0xABCDEF
   - platform: template
+    name: Coolix48
+    on_press:
+      remote_transmitter.transmit_coolix48:
+        data: 0xB24DBF40C381
+  - platform: template
     name: Samsung36
     on_press:
       remote_transmitter.transmit_samsung36:

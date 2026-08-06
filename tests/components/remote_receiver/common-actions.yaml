@@ -38,6 +38,11 @@ on_coolix:
     - logger.log:
         format: "on_coolix: %lu %lu"
         args: ["long(x.first)", "long(x.second)"]
+on_coolix48:
+  then:
+    - logger.log:
+        format: "on_coolix48: %llu"
+        args: ["x.data"]
 on_dish:
   then:
     - logger.log:

@@ -19,6 +19,12 @@ struct CoolixData {
   uint32_t second;
 };
 
+struct Coolix48Data {
+  uint64_t data;
+
+  bool operator==(const Coolix48Data &other) const { return this->data == other.data; }
+};
+
 class CoolixProtocol : public RemoteProtocol<CoolixData> {
  public:
   void encode(RemoteTransmitData *dst, const CoolixData &data) override;
@@ -34,6 +40,21 @@ template<typename... Ts> class CoolixAction : public RemoteTransmitterActionBase
   void encode(RemoteTransmitData *dst, Ts... x) override {
     CoolixProtocol().encode(dst, {this->first_.value(x...), this->second_.value(x...)});
   }
+};
+
+class Coolix48Protocol : public RemoteProtocol<Coolix48Data> {
+ public:
+  void encode(RemoteTransmitData *dst, const Coolix48Data &data) override;
+  optional<Coolix48Data> decode(RemoteReceiveData data) override;
+  void dump(const Coolix48Data &data) override;
+};
+
+DECLARE_REMOTE_PROTOCOL(Coolix48)
+
+template<typename... Ts> class Coolix48Action : public RemoteTransmitterActionBase<Ts...> {
+  TEMPLATABLE_VALUE(uint64_t, data)
+
+  void encode(RemoteTransmitData *dst, Ts... x) override { Coolix48Protocol().encode(dst, {this->data_.value(x...)}); }
 };
 
 }  // namespace esphome::remote_base
