@@ -18,6 +18,9 @@ class CoolixClimate final : public climate_ir::ClimateIR {
                                climate::CLIMATE_FAN_HIGH},
                               {climate::CLIMATE_SWING_OFF, climate::CLIMATE_SWING_VERTICAL}) {}
 
+  void set_supported_fan_modes(climate::ClimateFanModeMask fan_modes) { this->fan_modes_ = fan_modes; }
+  void set_supported_swing_modes(climate::ClimateSwingModeMask swing_modes) { this->swing_modes_ = swing_modes; }
+
   /// Override control to change settings of the climate device.
   void control(const climate::ClimateCall &call) override {
     send_swing_cmd_ = call.get_swing_mode().has_value();

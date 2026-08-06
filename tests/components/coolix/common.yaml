@@ -2,3 +2,6 @@ climate:
   - platform: coolix
     name: Coolix Climate
     transmitter_id: xmitr
+    supports_heat: false
+    supported_fan_modes: [AUTO, LOW, HIGH]
+    supported_swing_modes: []
